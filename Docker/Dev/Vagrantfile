@@ -3,4 +3,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
    config.vm.box = "https://oss-binaries.phusionpassenger.com/vagrant/boxes/latest/ubuntu-14.04-amd64-vbox.box" 
    config.vm.network "private_network", ip: "10.10.10.10"
    config.vm.provision "docker"
+   config.vm.provision "shell", inline:
+   "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill"
+   config.vm.synced_folder "~/Vagrant shared", "/home/vagrant/shared"
+   
+   config.vm.network :forwarded_port, guest: 27017, host: 27017
 end
