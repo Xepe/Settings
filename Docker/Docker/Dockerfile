@@ -27,7 +27,7 @@ CMD ["/sbin/my_init"]
 #RUN /build/ruby2.1.sh
 #   Python support.
 #RUN /build/python.sh
-#   Node.js and Meteor support.
+   Node.js and Meteor support.
 #RUN /build/nodejs.sh
 
 # ...put your own build instructions here...
