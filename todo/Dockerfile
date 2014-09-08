@@ -22,7 +22,7 @@ RUN npm install -g bower
 #install app
 ADD ./app /home/app
 WORKDIR /home/app
-RUN pip3 install -r development.txt
+RUN pip3 install -r requirements/development.txt
 
 # Clean up APT when done.
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
