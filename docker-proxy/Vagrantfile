@@ -1,0 +1,17 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.vm.box = "ubuntu" 
+    config.vm.network "private_network", ip: "192.168.5.10"
+    config.vm.provision "docker"
+    config.vm.provision "shell", inline:
+        "ps aux | grep 'sshd:' | awk '{print $2}' | xargs kill"
+    config.vm.synced_folder "~/Vagrant shared", "/home/vagrant/shared"
+
+    config.vm.synced_folder "~/Documents/Gitlab/todo", "/home/vagrant/apps/todo"
+
+    #config.vm.network :forwarded_port, guest: 27017, host: 27017
+end

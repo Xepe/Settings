@@ -1,0 +1,41 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
+VAGRANTFILE_API_VERSION = "2"  
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+    config.vm.define "db" do |v|
+        v.vm.provider "docker" do |d|
+            d.image = "paintedfox/postgresql"
+            d.name = "todo-db"
+            d.ports = ["5432:5432"]
+            d.env = {
+                USER: "todo",
+                PASS: "password",
+                DB: "todo"
+            }
+            d.vagrant_vagrantfile = "../docker-proxy/Vagrantfile"
+        end
+    end
+
+    config.vm.define "app" do |v|
+        v.vm.provider "docker" do |d|
+            d.build_dir = "."
+            d.name = "todo-web"
+            d.has_ssh = true
+            d.ports = ['80:80', '443:443']
+            d.cmd     = ["/sbin/my_init", "--enable-insecure-key"]
+            d.link("todo-db:db")
+            d.env = {
+                DJANGO_SETTINGS_MODULE: "web.settings.development"
+            }
+            d.vagrant_vagrantfile = "../docker-proxy/Vagrantfile"
+        end
+
+        v.ssh.username = "root"                                                                                                                                       
+        v.ssh.private_key_path = "./docker/insecure_key"      
+        v.vm.synced_folder "./app", "/home/app"
+    end
+
+end  

@@ -1,0 +1,4 @@
+# Include base requirements 
+-r base.txt
+
+django-bower==5.0.1
