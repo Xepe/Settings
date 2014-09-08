@@ -1,0 +1,15 @@
+# Vagrant
+.vagrant/
+
+# Mongo
+mongo/data
+
+# Redis
+redis/data
+
+# General
+*.log
+*.pyc
+__pycache__
+bower_components
+.idea
